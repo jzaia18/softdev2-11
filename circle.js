@@ -1,5 +1,8 @@
 var clear = function() {
-  slate.innerHTML = '';
+  for(var = 0; i < circs.length; i++){
+	circs[i].remove();
+  }
+  circs = []
 };
 
 var newCirc = function(e) {
