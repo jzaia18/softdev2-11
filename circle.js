@@ -1,8 +1,8 @@
 var clear = function() {
-  for(var = 0; i < circs.length; i++){
-	circs[i].remove();
+  for(var i = 0; i < circs.length; i++){
+    circs[i].remove();
   }
-  circs = []
+  circs = [];
 };
 
 var newCirc = function(e) {
@@ -12,45 +12,47 @@ var newCirc = function(e) {
   var x = e.offsetX;
   var y = e.offsetY;
 
-  var dvd = slate.appendChild(document.createElementNS(NS, 'circle'));
-  dvd.setAttribute('x', x);
-  dvd.setAttribute('y', y);
-  dvd.setAttribute('dx', 3);
-  dvd.setAttribute('dy', 3);
-  dvd.setAttribute('r', rad);
-  dvd.setAttribute('href', 'david.png');
-  dvd.setAttribute('width', rad*2);
-  dvd.setAttribute('height', rad*2);
-  dvd.setAttribute('fill', "lightsteelblue");
-  circs.push(dvd);
+  var dot = slate.appendChild(document.createElementNS(NS, 'circle'));
+  dot.setAttribute('cx', x);
+  dot.setAttribute('cy', y);
+  dot.setAttribute('dx', dx);
+  dot.setAttribute('dy', dy);
+  dot.setAttribute('r', rad);
+  dot.setAttribute('href', 'david.png');
+  dot.setAttribute('width', rad*2);
+  dot.setAttribute('height', rad*2);
+  dot.setAttribute('fill', "lightsteelblue");
+  circs.push(dot);
 };
 
-//TODO
 var drawCircs = function() {
-  for(var i; i < circs.length; i++){
+  for(var i = 0; i < circs.length; i++){
     drawCirc(circs[i]);
   }
 };
 
 var drawCirc = function(element) {
-  var x = element.getAttribute("x");
-  var y = element.getAttribute("y");
-  var dx = element.getAttribute("dx");
-  var dy = element.getAttribute("dy");
-  var rad = element.getAttribute("r");
+  var x = Math.floor(element.getAttribute("cx"));
+  var y = Math.floor(element.getAttribute("cy"));
+  var dx = Math.floor(element.getAttribute("dx"));
+  var dy = Math.floor(element.getAttribute("dy"));
+  var rad = Math.floor(element.getAttribute("r"));
 
-  if (Math.abs(y-HEIGHT) < rad*2 + 1 || y < 1)
-    dy*=-1;
-  if (Math.abs(x-WIDTH) < rad*2 + 1 || x < 1)
+  if (WIDTH - x < rad || x < 1) {
     dx*=-1;
-
-  element.setAttribute('x', x);
-  element.setAttribute('y', y);
-
-  console.log('hui');
+    element.setAttribute('dx', dx);
+  }
+  if (HEIGHT - y < rad || y < 1) {
+    dy*=-1;
+    element.setAttribute('dy', dy);
+  }
 
   x+=dx;
   y+=dy;
+
+
+  element.setAttribute('cx', x);
+  element.setAttribute('cy', y);
 };
 
 var NS = "http://www.w3.org/2000/svg";
@@ -62,4 +64,4 @@ var HEIGHT = 500; //cheaty
 
 document.getElementById("clear").addEventListener("click", clear);
 document.getElementById("slate").addEventListener("click", newCirc);
-setInterval(1000, drawCircs);
+var t = setInterval(drawCircs, 20);
